@@ -1,4 +1,4 @@
-extern crate comments;
+extern crate comment;
 
 
 #[cfg(test)]
