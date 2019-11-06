@@ -1,0 +1,8 @@
+[package]
+name = "comments"
+version = "0.1.0"
+authors = ["adam-mcdaniel <adam.mcdaniel17@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+comment-strip = "0.1.3"
