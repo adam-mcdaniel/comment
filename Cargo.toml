@@ -3,6 +3,9 @@ name = "comments"
 version = "0.1.0"
 authors = ["adam-mcdaniel <adam.mcdaniel17@gmail.com>"]
 edition = "2018"
+description = "Strip comments for multiple programming languages"
+license = "MIT"
+repository = "https://github.com/adam-mcdaniel/comments"
 
 [dependencies]
 comment-strip = "0.1.3"
