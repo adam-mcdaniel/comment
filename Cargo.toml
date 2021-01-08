@@ -8,4 +8,4 @@ license = "MIT"
 repository = "https://github.com/adam-mcdaniel/comments"
 
 [dependencies]
-comment-strip = { path = "comment-strip", version = "0.1.4" }
+quick-error = "1.2.0"
