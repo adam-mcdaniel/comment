@@ -1,6 +1,5 @@
 extern crate comment;
 
-
 #[cfg(test)]
 mod whitespace_test {
     #[test]
@@ -12,6 +11,13 @@ int main() {
     printf("Hello, world!");
 }
 "#;
-        assert_eq!(comments::c::strip(script).unwrap().lines().collect::<Vec<&str>>().len(), script.lines().collect::<Vec<&str>>().len());
+        assert_eq!(
+            comment::c::strip(script)
+                .unwrap()
+                .lines()
+                .collect::<Vec<&str>>()
+                .len(),
+            script.lines().collect::<Vec<&str>>().len()
+        );
     }
 }
