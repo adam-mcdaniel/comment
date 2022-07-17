@@ -83,16 +83,32 @@ fn find_comments(input: &str, style: &CommentStyle) -> Result<Vec<CommentMatch>,
 }
 
 fn remove_matches(input: String, matches: Vec<CommentMatch>) -> Result<String, &'static str> {
-    let mut input = input;
     let mut matches = matches;
     matches.sort_by_key(|m| m.from);
-    /* must come before reversing */
     check_sorted_matches(input.as_str(), &matches)?;
-    matches.reverse();
-    for m in matches {
-        input.drain((m.from)..(m.to));
-    }
-    Ok(input.to_owned())
+    
+    // Build a new string from the characters of the old,
+    // rejecting chars in the next lowest match's range.
+    let mut match_it = matches.into_iter();
+    let mut curr_match = match_it.next();
+    let retained = input
+        .chars()
+        .enumerate()
+        .filter_map(|(input_idx, c)| match curr_match {
+            None => Some(c),
+            Some(m) => {
+                if input_idx < m.from {
+                    Some(c)
+                } else if input_idx >= m.to {
+                    curr_match = match_it.next();
+                    Some(c)
+                } else {
+                    None
+                }
+            }
+        });
+
+    Ok(retained.collect())
 }
 
 fn check_sorted_matches(input: &str, matches: &Vec<CommentMatch>) -> Result<(), &'static str> {
@@ -153,6 +169,15 @@ mod tests {
         assert!(checked.is_err());
         let stripped = remove_matches(s, matches);
         assert!(stripped.is_err());
+    }
+
+    #[test]
+    fn remove_works_on_multibyte() {
+        let s = "í12é#5678".to_owned();
+        //       012345678
+        let matches = vec![CommentMatch { from: 4, to: 9 }];
+        let stripped = remove_matches(s, matches);
+        assert_eq!(stripped, Ok("í12é".to_owned()));
     }
 
 }
